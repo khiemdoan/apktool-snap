@@ -1,0 +1,66 @@
+name: apktool
+adopt-info: apktool
+summary: A tool for reverse engineering Android apk files.
+description: |+
+  A tool for reverse engineering 3rd party, closed, binary Android apps. It can decode resources to nearly original form and rebuild them after making some modifications. It also makes working with an app easier because of the project like file structure and automation of some repetitive tasks like building apk, etc.
+
+  It is NOT intended for piracy and other non-legal uses. It could be used for localizing, adding some features or support for custom platforms, analyzing applications and much more.
+
+  Features
+  * Disassembling resources to nearly original form (including resources.arsc, classes.dex, 9.png. and XMLs)
+  * Rebuilding decoded resources back to binary APK/JAR
+  * Organizing and handling APKs that depend on framework resources
+  * Smali Debugging (Removed in 2.1.0 in favor of IdeaSmali)
+  * Helping with repetitive tasks
+
+  Sponsored By
+  * Sourcetoad - helping with a weekly sponsorship for continued improvement and maintenance of the project.
+
+  Install Instructions
+  * sudo snap install apktool
+
+  Links of Interest
+  * XDA Thread - For those who wish to communicate on XDA-Developers for community support
+  * Smali Project - Smali Project is the tool used in the disassembling of .dex files
+  * Gitter #apktool - Gitter Channel for support, bugs and discussions
+  * Freenode #apktool - IRC Channel for support, bugs and discussions
+
+  Authors
+  * Connor Tumbleson - Current Maintainer
+  * Ryszard Wiśniewski - Original Creator
+
+confinement: strict
+grade: stable
+base: core18
+
+apps:
+  apktool:
+    command: apktool
+    environment:
+      JAVA_HOME: $SNAP/usr/lib/jvm/java-8-openjdk-$SNAP_ARCH
+      PATH: $JAVA_HOME/bin:$PATH
+    plugs:
+      - home
+      - removable-media
+
+parts:
+  apktool:
+    plugin: nil
+    build-packages:
+      - wget
+    stage-packages:
+      - ca-certificates-java
+      - openjdk-8-jre-headless
+    override-build: |
+      snapcraftctl build
+
+      # Download
+      wget -O $SNAPCRAFT_PART_INSTALL/apktool https://raw.githubusercontent.com/iBotPeaches/Apktool/master/scripts/linux/apktool
+      url=$(wget -q -O - https://api.github.com/repos/iBotPeaches/Apktool/releases/latest \
+        | grep -E '"browser_download_url": ".*"' \
+        | sed -r 's/\s*"browser_download_url": "(.*)"/\1/')
+      wget -O $SNAPCRAFT_PART_INSTALL/apktool.jar $url
+      chmod +x $SNAPCRAFT_PART_INSTALL/apktool
+
+      # Set version
+      snapcraftctl set-version $(echo $url | egrep -o "([0-9]{1,}\.)+[0-9]{1,}" | head -n 1)
