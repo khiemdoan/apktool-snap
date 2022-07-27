@@ -65,3 +65,6 @@ parts:
 
       # Set version
       snapcraftctl set-version $(echo $url | egrep -o "([0-9]{1,}\.)+[0-9]{1,}" | head -n 1)
+    override-prime: |
+       snapcraftctl prime
+       rm -vf usr/lib/jvm/java-11-openjdk-*/lib/security/blacklisted.certs
