@@ -37,7 +37,7 @@ apps:
   apktool:
     command: apktool
     environment:
-      JAVA_HOME: $SNAP/usr/lib/jvm/java-8-openjdk-$SNAP_ARCH
+      JAVA_HOME: $SNAP/usr/lib/jvm/java-11-openjdk-$SNAP_ARCH
       PATH: $JAVA_HOME/bin:$PATH
     plugs:
       - home
