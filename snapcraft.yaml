@@ -32,6 +32,9 @@ apps:
 parts:
   apktool:
     plugin: nil
+    build-packages:
+      - curl
+      - jq
     stage-packages:
       - openjdk-21-jre-headless
     override-build: |
