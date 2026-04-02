@@ -36,6 +36,7 @@ parts:
       - curl
       - jq
     stage-packages:
+      - ca-certificates-java
       - openjdk-21-jre-headless
     override-build: |
       snapcraftctl build
