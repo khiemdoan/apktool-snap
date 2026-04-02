@@ -33,8 +33,10 @@ parts:
   apktool:
     plugin: nil
     build-packages:
+      - ca-certificates-java
       - curl
       - jq
+      - openjdk-21-jre-headless
     stage-packages:
       - ca-certificates-java
       - openjdk-21-jre-headless
